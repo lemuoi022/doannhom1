@@ -34,7 +34,7 @@ public class Storage {
     public Storage() {
         NodeList nodes;
         try {
-            nodes = XMLParser.parse("demo\\src\\main\\java\\com\\example\\demo\\Storage\\StorageConfig.xml", "storage");
+            nodes = XMLParser.parse("src\\main\\java\\com\\example\\danhom1\\Storage\\StorageConfig.xml", "storage");
             if (nodes == null || nodes.getLength() <= 0) {
                 throw new StorageException("XML Config Error." + nodes); 
             }

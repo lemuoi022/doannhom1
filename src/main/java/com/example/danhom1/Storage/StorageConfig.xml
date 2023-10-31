@@ -1,7 +1,7 @@
 <xml>
     <storage>
         <path>
-            demo/src/main/java/com/example/demo/Storage/StorageDir
+            src/main/java/com/example/danhom1/Storage/StorageDir
         </path>
     </storage>
 </xml>

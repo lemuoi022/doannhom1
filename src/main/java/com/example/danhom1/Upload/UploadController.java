@@ -1,6 +1,6 @@
 package com.example.danhom1.Upload;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.stream.Collectors;
 
 // import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class UploadController {
 	}
 
     @GetMapping("/")
-	public String listUploadedFiles(Model model) throws IOException {
+	public String listUploadedFiles(Model model) {
 		model.addAttribute("files", storageService.loadAll()
         .map(path -> MvcUriComponentsBuilder.fromMethodName(UploadController.class, 
         "serveFile", path.getFileName().toString()).build().toUri().toString()).
@@ -60,6 +60,5 @@ public class UploadController {
 	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
 		return ResponseEntity.notFound().build();
 	}
-
 }
 
