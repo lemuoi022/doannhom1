@@ -9,5 +9,4 @@ public class Danhom1Application {
 	public static void main(String[] args) {
 		SpringApplication.run(Danhom1Application.class, args);
 	}
-
 }
