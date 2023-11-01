@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import lombok.NonNull;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -26,6 +27,7 @@ public class Storage {
     private File file;
 
     @Getter
+    @NonNull
     private String pPath;
 
     @Getter
