@@ -1,6 +1,5 @@
 package com.example.danhom1.Storage;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,25 +12,20 @@ import org.xml.sax.SAXException;
 
 import com.example.danhom1.XMLParser;
 
-// import java.beans.JavaBean;
 // import org.springframework.boot.context.properties.ConfigurationProperties;
 import lombok.Getter;
-import lombok.Setter;
 
 // @ConfigurationProperties("Storage")
-// @JavaBean
+@Getter
 @Component
 public class Storage {
-    @Getter
-    @Setter
-    private File file;
-
-    @Getter
     @NonNull
-    private String pPath;
+    private final String pPath;
 
-    @Getter
-    private static final String vPath = "0:/";
+    private final String vPath = "0:/";
+
+    //limit in MB
+    private final Float defaultLimit;
 
     public Storage() {
         NodeList nodes;
@@ -42,7 +36,8 @@ public class Storage {
             }
             Element element = (Element) nodes.item(0);
             this.pPath = element.getElementsByTagName("path").item(0).getTextContent();
-        } catch (ParserConfigurationException | SAXException | IOException e) {
+            this.defaultLimit = Float.valueOf(element.getElementsByTagName("limit").item(0).getTextContent());
+        } catch (ParserConfigurationException | SAXException | IOException | NullPointerException e) {
             throw new StorageException("XML Config Error.", e); 
         }
     }
