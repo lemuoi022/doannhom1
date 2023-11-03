@@ -5,6 +5,7 @@ import com.example.danhom1.User.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Builder
 @Getter
 @Setter
 @Entity
@@ -21,5 +22,5 @@ public class UserStorage extends Storage {
     @NonNull
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userID",referencedColumnName = "id", nullable = false, unique = true)
-    private final User user = new User();
+    private User user;
 }
