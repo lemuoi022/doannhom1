@@ -16,6 +16,7 @@ import com.example.danhom1.Exception.StorageFileNotFoundException;
 import lombok.NonNull;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
+import org.jetbrains.annotations.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +54,7 @@ public class StorageService {
             }
             // Paths.get(file.getOriginalFilename()).normalize().toAbsolutePath();
             try (LimitedInputStream stream = new LimitedInputStream(file.getInputStream(), remainingSpace) {
+                @Contract("_, _ -> fail")
                 @Override
                 protected void raiseError(long pSizeMax, long pCount) throws ExceedLimitException{
                     throw new ExceedLimitException("The file exceeded the storage limit!");
