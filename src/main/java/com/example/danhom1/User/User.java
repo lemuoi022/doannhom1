@@ -10,9 +10,7 @@ import jakarta.validation.constraints.NotEmpty;
 //import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-@PasswordsMatch.List({
-        @PasswordsMatch(field = "pass", fieldMatch = "repeatPass", message = "Passwords do not match.")
-})
+@PasswordsMatch.List({@PasswordsMatch(field = "pass", fieldMatch = "repeatPass", message = "Passwords do not match.")})
 @Builder
 @Data
 @Getter
