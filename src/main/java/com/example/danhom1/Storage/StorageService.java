@@ -37,10 +37,11 @@ public class StorageService {
             throw new StorageException("Root path is empty!");
         }
         this.rootPath = Paths.get(storage.getPPath().strip());
+        if (!this.rootPath.toFile().exists())
+            init();
         this.remainingSpace = storage.getLimit() * 1024 * 1024  - FileUtils.sizeOfDirectory(this.rootPath.toFile());
         if (this.remainingSpace <= 0)
             throw new ExceedLimitException("The storage has exceed the limit!");
-
     }
 
     public void store(@NonNull MultipartFile file) {
@@ -65,7 +66,7 @@ public class StorageService {
                     StandardCopyOption.REPLACE_EXISTING);
                 }
             }
-        } catch (IOException e) {
+        } catch (IOException | ExceedLimitException e) {
             throw new StorageException("Failed to store file.", e);
         }
     }
