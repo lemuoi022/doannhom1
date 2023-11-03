@@ -6,6 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.example.danhom1.Exception.StorageException;
 import lombok.NonNull;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -26,6 +27,7 @@ public class Storage {
     private final String vPath = "0:/";
 
     //limit in MB
+    @Setter
     private Float limit;
 
     public Storage() {
