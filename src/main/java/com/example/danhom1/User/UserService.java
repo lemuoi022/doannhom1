@@ -1,6 +1,6 @@
 package com.example.danhom1.User;
 
-import com.example.danhom1.Exception.UserAlreadyExistsException;
+import com.example.danhom1.Exception.UserAlreadyExistedException;
 import com.example.danhom1.UserStorage.UserStorage;
 import com.example.danhom1.UserStorage.UserStorageRepo;
 import lombok.AllArgsConstructor;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
     private final UserRepo userRepo;
     private final UserStorageRepo userStorageRepo;
-    public User RegisterNewUser(@NonNull User user) throws UserAlreadyExistsException {
+    public User RegisterNewUser(@NonNull User user) throws UserAlreadyExistedException {
         if (EmailExists((user.getEmail())))
-            throw new UserAlreadyExistsException();
+            throw new UserAlreadyExistedException();
         UserStorage userStorage = new UserStorage();
         userStorage.setUser(user);
         userStorageRepo.save(userStorage);
