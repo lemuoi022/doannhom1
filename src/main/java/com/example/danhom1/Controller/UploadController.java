@@ -31,7 +31,7 @@ public class UploadController {
 		this.storageService = storageService;
 	}
 
-    @GetMapping("/")
+    @GetMapping("/files")
 	public String listUploadedFiles(Model model) {
 		model.addAttribute("files", storageService.loadAll()
         .map(path -> MvcUriComponentsBuilder.fromMethodName(UploadController.class, 
@@ -49,7 +49,7 @@ public class UploadController {
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
 	}
 
-	@PostMapping("/")
+	@PostMapping("/files")
 	public String handleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
         storageService.store(file);
 		redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
