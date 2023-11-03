@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import com.example.danhom1.Exception.StorageException;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Element;
@@ -32,7 +33,7 @@ public class Storage {
         try {
             nodes = XMLParser.parse("src\\main\\java\\com\\example\\danhom1\\Storage\\StorageConfig.xml", "storage");
             if (nodes == null || nodes.getLength() <= 0) {
-                throw new StorageException("XML Config Error." + nodes); 
+                throw new StorageException("XML Config Error." + nodes);
             }
             Element element = (Element) nodes.item(0);
             this.pPath = element.getElementsByTagName("path").item(0).getTextContent();

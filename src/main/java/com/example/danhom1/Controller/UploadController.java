@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.danhom1.Storage.StorageFileNotFoundException;
+import com.example.danhom1.Exception.StorageFileNotFoundException;
 import com.example.danhom1.Storage.StorageService;
 
 @Controller

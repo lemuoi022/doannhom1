@@ -1,5 +1,6 @@
-package com.example.danhom1.Storage;
+package com.example.danhom1.UserStorage;
 
+import com.example.danhom1.Storage.Storage;
 import com.example.danhom1.User.User;
 import jakarta.persistence.*;
 import lombok.*;

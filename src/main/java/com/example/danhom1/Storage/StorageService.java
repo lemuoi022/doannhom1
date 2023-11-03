@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 // import org.springframework.beans.factory.annotation.Autowired;
+import com.example.danhom1.Exception.StorageException;
+import com.example.danhom1.Exception.StorageFileNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
@@ -26,7 +28,7 @@ public class StorageService {
     public StorageService(Storage storage){
         // Missing separated individual user folder feature
         if(storage.getPPath().isBlank()){
-            throw new StorageException("Root path is empty!"); 
+            throw new StorageException("Root path is empty!");
         }
         this.rootPath = Paths.get(storage.getPPath().strip());
     }

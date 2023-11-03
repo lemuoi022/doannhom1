@@ -1,4 +1,4 @@
-package com.example.danhom1.User;
+package com.example.danhom1.Exception;
 
 import lombok.experimental.StandardException;
 

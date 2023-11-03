@@ -1,5 +1,6 @@
 package com.example.danhom1.Validator;
 
+import com.example.danhom1.Validator.Annotation.ValidPassword;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.passay.*;

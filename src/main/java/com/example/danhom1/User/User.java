@@ -1,9 +1,9 @@
 package com.example.danhom1.User;
 
-import com.example.danhom1.Storage.UserStorage;
-import com.example.danhom1.Validator.PasswordsMatch;
-import com.example.danhom1.Validator.ValidEmail;
-import com.example.danhom1.Validator.ValidPassword;
+import com.example.danhom1.UserStorage.UserStorage;
+import com.example.danhom1.Validator.Annotation.PasswordsMatch;
+import com.example.danhom1.Validator.Annotation.ValidEmail;
+import com.example.danhom1.Validator.Annotation.ValidPassword;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
