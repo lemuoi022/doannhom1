@@ -28,7 +28,7 @@ public class Storage {
 
     //limit in MB
     @Setter
-    private Float limit;
+    private Long limit;
 
     public Storage() {
         NodeList nodes;
@@ -39,7 +39,7 @@ public class Storage {
             }
             Element element = (Element) nodes.item(0);
             this.pPath = element.getElementsByTagName("path").item(0).getTextContent();
-            this.limit = Float.valueOf(element.getElementsByTagName("limit").item(0).getTextContent());
+            this.limit = Long.valueOf(element.getElementsByTagName("limit").item(0).getTextContent().strip());
         } catch (ParserConfigurationException | SAXException | IOException | NullPointerException e) {
             throw new StorageException("XML Config Error.", e); 
         }
