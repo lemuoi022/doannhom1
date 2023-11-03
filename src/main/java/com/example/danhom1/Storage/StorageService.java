@@ -1,5 +1,6 @@
 package com.example.danhom1.Storage;
 
+import java.io.InputStream;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
@@ -15,8 +16,6 @@ import com.example.danhom1.Exception.StorageException;
 import com.example.danhom1.Exception.StorageFileNotFoundException;
 import lombok.NonNull;
 import org.apache.commons.io.FileUtils;
-import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
-import org.jetbrains.annotations.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,16 +52,18 @@ public class StorageService {
                 + "\n" + toStoreFile + "\n" + this.rootPath.toAbsolutePath() + file.getOriginalFilename());
             }
             // Paths.get(file.getOriginalFilename()).normalize().toAbsolutePath();
-            try (LimitedInputStream stream = new LimitedInputStream(file.getInputStream(), remainingSpace) {
-                @Contract("_, _ -> fail")
-                @Override
-                protected void raiseError(long pSizeMax, long pCount) throws ExceedLimitException{
+            try (InputStream stream = file.getInputStream())  {
+                if ((!toStoreFile.toFile().exists()
+                        && (file.getSize() > this.remainingSpace))
+                        || (toStoreFile.toFile().exists()
+                        && ((file.getSize() - toStoreFile.toFile().length()) > this.remainingSpace))) {
+                    stream.close();
                     throw new ExceedLimitException("The file exceeded the storage limit!");
+                } else {
+                    Files.copy(stream,
+                    toStoreFile,
+                    StandardCopyOption.REPLACE_EXISTING);
                 }
-            })  {
-                Files.copy(stream, 
-                toStoreFile, 
-                StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
             throw new StorageException("Failed to store file.", e);
