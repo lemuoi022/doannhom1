@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 // import org.springframework.beans.factory.annotation.Autowired;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
