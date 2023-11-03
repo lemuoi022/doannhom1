@@ -57,6 +57,7 @@ public class StorageService {
 
     public Stream<Path> loadAll() {
         try {
+            //noinspection resource
             return Files.walk(this.rootPath, 1).filter(path -> !path.equals(this.rootPath)).map(this.rootPath::relativize);
 		}
 		catch (IOException e) {
