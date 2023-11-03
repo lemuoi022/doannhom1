@@ -1,5 +1,9 @@
 package com.example.danhom1.User;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepo extends CrudRepository<User, Integer> { }
+import java.util.List;
+
+public interface UserRepo extends JpaRepository<User, Integer> {
+    List<User> findAllByEmailIs(String email);
+}
