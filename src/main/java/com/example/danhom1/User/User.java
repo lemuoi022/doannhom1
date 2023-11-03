@@ -1,6 +1,7 @@
 package com.example.danhom1.User;
 
 import com.example.danhom1.Storage.UserStorage;
+import com.example.danhom1.Validator.PasswordsMatch;
 import com.example.danhom1.Validator.ValidEmail;
 import com.example.danhom1.Validator.ValidPassword;
 import jakarta.persistence.*;
@@ -9,6 +10,9 @@ import jakarta.validation.constraints.NotEmpty;
 //import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
+@PasswordsMatch.List({
+        @PasswordsMatch(field = "pass", fieldMatch = "repeatPass", message = "Passwords do not match.")
+})
 @Builder
 @Data
 @Getter
@@ -37,6 +41,11 @@ public class User {
     @Column(name = "pass", nullable = false, unique = true, length = 24)
     @NotEmpty(message = "Password can't not be empty")
     private String pass;
+
+    @ValidPassword
+    @NonNull
+    @NotEmpty(message = "Repeated password can't not be empty.")
+    transient private String repeatPass;
 
     @Column(name = "email", nullable = false, unique = true)
     @Email(message = "Email is not valid")
