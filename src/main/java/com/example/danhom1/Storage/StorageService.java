@@ -23,10 +23,10 @@ public class StorageService {
     // @Autowired
     public StorageService(Storage storage){
         // Missing separated individual user folder feature
-        if(storage.getPPath().trim().isEmpty()){
+        if(storage.getPPath().isBlank()){
             throw new StorageException("Root path is empty!"); 
         }
-        this.rootPath = Paths.get(storage.getPPath().trim());
+        this.rootPath = Paths.get(storage.getPPath().strip());
     }
 
     public void store(MultipartFile file) {
@@ -45,8 +45,8 @@ public class StorageService {
                 StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
-			throw new StorageException("Failed to store file.", e);
-		}
+            throw new StorageException("Failed to store file.", e);
+        }
     }
 
     public Path load(String filename){
@@ -54,7 +54,7 @@ public class StorageService {
     }
 
     public Stream<Path> loadAll() {
-		try {
+        try {
             return Files.walk(this.rootPath, 1).filter(path -> !path.equals(this.rootPath)).map(this.rootPath::relativize);
 		}
 		catch (IOException e) {
