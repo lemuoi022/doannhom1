@@ -4,6 +4,7 @@ import com.example.danhom1.Storage.UserStorage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Getter
@@ -25,8 +26,11 @@ public class User {
     @NotEmpty(message = "Username can't not be empty")
     private String name;
 
+    //Password must have at minimum 8 characters, maximum 24 characters
+    //Must include a lower character, an upper character, a number and a special character
     @NonNull
-    @Column(name = "pass", nullable = false, unique = true)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$")
+    @Column(name = "pass", nullable = false, unique = true, length = 24)
     @NotEmpty(message = "Password can't not be empty")
     private String pass;
 
