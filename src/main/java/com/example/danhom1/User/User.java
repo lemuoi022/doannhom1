@@ -1,14 +1,16 @@
 package com.example.danhom1.User;
 
 import com.example.danhom1.Storage.UserStorage;
+import com.example.danhom1.Validator.ValidEmail;
+import com.example.danhom1.Validator.ValidPassword;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Pattern;
+//import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-@Getter
 @Data
+@Getter
 @Setter
 @Entity
 @AllArgsConstructor
@@ -28,14 +30,16 @@ public class User {
 
     //Password must have at minimum 8 characters, maximum 24 characters
     //Must include a lower character, an upper character, a number and a special character
+    // @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$")
+    @ValidPassword
     @NonNull
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,24}$")
     @Column(name = "pass", nullable = false, unique = true, length = 24)
     @NotEmpty(message = "Password can't not be empty")
     private String pass;
 
     @Column(name = "email", nullable = false, unique = true)
-    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
+    @Email(message = "Email is not valid")
+    @ValidEmail
     @NonNull
     @NotEmpty
     private String email;
