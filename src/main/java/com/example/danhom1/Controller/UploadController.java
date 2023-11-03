@@ -4,6 +4,8 @@ package com.example.danhom1.Controller;
 import java.util.stream.Collectors;
 
 // import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +25,9 @@ import com.example.danhom1.Exception.StorageFileNotFoundException;
 import com.example.danhom1.Storage.StorageService;
 
 @Controller
+@AllArgsConstructor
 public class UploadController {
     private final StorageService storageService;
-
-    // @Autowired
-    public UploadController(StorageService storageService) {
-		this.storageService = storageService;
-	}
 
     @GetMapping("/files")
 	public String listUploadedFiles(Model model) {
