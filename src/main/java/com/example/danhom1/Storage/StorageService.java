@@ -54,7 +54,7 @@ public class StorageService {
             // Paths.get(file.getOriginalFilename()).normalize().toAbsolutePath();
             try (LimitedInputStream stream = new LimitedInputStream(file.getInputStream(), remainingSpace) {
                 @Override
-                protected void raiseError(long pSizeMax, long pCount) throws IOException {
+                protected void raiseError(long pSizeMax, long pCount) throws ExceedLimitException{
                     throw new ExceedLimitException("The file exceeded the storage limit!");
                 }
             })  {
