@@ -3,4 +3,4 @@ package com.example.danhom1.Exception;
 import lombok.experimental.StandardException;
 
 @StandardException
-public class UserAlreadyExistException extends Throwable{ }
+public class UserAlreadyExistsException extends Throwable{ }
