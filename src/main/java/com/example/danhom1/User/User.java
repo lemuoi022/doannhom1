@@ -17,7 +17,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonNull
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
     @NonNull
@@ -26,11 +26,11 @@ public class User {
     private String name;
 
     @NonNull
-    @Column(name = "pass", nullable = false)
+    @Column(name = "pass", nullable = false, unique = true)
     @NotEmpty(message = "Password can't not be empty")
     private String pass;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     @NonNull
     @NotEmpty
