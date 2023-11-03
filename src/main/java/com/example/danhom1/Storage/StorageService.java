@@ -13,6 +13,8 @@ import java.nio.file.Path;
 // import org.springframework.beans.factory.annotation.Autowired;
 import com.example.danhom1.Exception.StorageException;
 import com.example.danhom1.Exception.StorageFileNotFoundException;
+import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileSystemUtils;
@@ -25,7 +27,7 @@ import org.springframework.core.io.UrlResource;
 public class StorageService {
     private final Path rootPath;
     // @Autowired
-    public StorageService(Storage storage){
+    public StorageService(@NonNull @Autowired Storage storage){
         // Missing separated individual user folder feature
         if(storage.getPPath().isBlank()){
             throw new StorageException("Root path is empty!");
@@ -33,7 +35,7 @@ public class StorageService {
         this.rootPath = Paths.get(storage.getPPath().strip());
     }
 
-    public void store(MultipartFile file) {
+    public void store(@NonNull MultipartFile file) {
         // Missing separated individual user folder feature
         try {
             Path toStoreFile = this.rootPath.resolve(Paths.get(Objects.requireNonNull(file.getOriginalFilename()))).normalize().toAbsolutePath();
