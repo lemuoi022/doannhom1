@@ -39,7 +39,7 @@ public class StorageService {
         this.rootPath = Paths.get(storage.getPPath().strip());
         if (!this.rootPath.toFile().exists())
             init();
-        this.remainingSpace = storage.getLimit() * 1024 * 1024  - FileUtils.sizeOfDirectory(this.rootPath.toFile());
+        this.remainingSpace = storage.getLimit() * 1024 * 1024 - FileUtils.sizeOfDirectory(this.rootPath.toFile());
         if (this.remainingSpace <= 0)
             throw new ExceedLimitException("The storage has exceed the limit!");
     }
