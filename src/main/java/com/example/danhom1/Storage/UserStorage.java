@@ -31,5 +31,5 @@ public class UserStorage extends Storage {
     @NonNull
     @NotEmpty(message = "There must be a root path.")
     @Column(name = "rootPath", nullable = false)
-    private final String rootPath = super.getPPath() + user.getName().strip();
+    private final String rootPath = super.getPPath() + user.getName();
 }
