@@ -5,15 +5,17 @@ import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 // import org.springframework.beans.factory.annotation.Autowired;
+import com.example.danhom1.Exception.ExceedLimitException;
 import com.example.danhom1.Exception.StorageException;
 import com.example.danhom1.Exception.StorageFileNotFoundException;
 import lombok.NonNull;
+import org.apache.commons.io.FileUtils;
+import org.apache.tomcat.util.http.fileupload.util.LimitedInputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +28,8 @@ import org.springframework.core.io.UrlResource;
 @Transactional
 public class StorageService {
     private final Path rootPath;
+    private final Long remainingSpace;
+
     // @Autowired
     public StorageService(@NonNull @Autowired Storage storage){
         // Missing separated individual user folder feature
@@ -33,6 +37,10 @@ public class StorageService {
             throw new StorageException("Root path is empty!");
         }
         this.rootPath = Paths.get(storage.getPPath().strip());
+        this.remainingSpace = storage.getLimit() * 1024 * 1024  - FileUtils.sizeOfDirectory(this.rootPath.toFile());
+        if (this.remainingSpace <= 0)
+            throw new ExceedLimitException("The storage has exceed the limit!");
+
     }
 
     public void store(@NonNull MultipartFile file) {
@@ -41,11 +49,15 @@ public class StorageService {
             Path toStoreFile = this.rootPath.resolve(Paths.get(Objects.requireNonNull(file.getOriginalFilename()))).normalize().toAbsolutePath();
             if (!toStoreFile.getParent().equals(this.rootPath.toAbsolutePath())) {
                 throw new StorageException("Cannot store file outside current directory." 
-                + "\n" + toStoreFile + "\n" + this.rootPath.toAbsolutePath() + file.getOriginalFilename()
-                );
+                + "\n" + toStoreFile + "\n" + this.rootPath.toAbsolutePath() + file.getOriginalFilename());
             }
             // Paths.get(file.getOriginalFilename()).normalize().toAbsolutePath();
-            try (InputStream stream = file.getInputStream()) {
+            try (LimitedInputStream stream = new LimitedInputStream(file.getInputStream(), remainingSpace) {
+                @Override
+                protected void raiseError(long pSizeMax, long pCount) throws IOException {
+                    throw new ExceedLimitException("The file exceeded the storage limit!");
+                }
+            })  {
                 Files.copy(stream, 
                 toStoreFile, 
                 StandardCopyOption.REPLACE_EXISTING);

@@ -22,7 +22,7 @@ import com.example.danhom1.Storage.StorageService;
 @Controller
 @AllArgsConstructor
 public class UploadController {
-    private final StorageService storageService;
+	private final StorageService storageService;
 
     @GetMapping("/upload")
 	@ModelAttribute
@@ -55,4 +55,3 @@ public class UploadController {
 		return ResponseEntity.notFound().build();
 	}
 }
-
