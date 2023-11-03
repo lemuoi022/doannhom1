@@ -26,7 +26,7 @@ public class Storage {
     private final String vPath = "0:/";
 
     //limit in MB
-    private final Float defaultLimit;
+    private Float limit;
 
     public Storage() {
         NodeList nodes;
@@ -37,7 +37,7 @@ public class Storage {
             }
             Element element = (Element) nodes.item(0);
             this.pPath = element.getElementsByTagName("path").item(0).getTextContent();
-            this.defaultLimit = Float.valueOf(element.getElementsByTagName("limit").item(0).getTextContent());
+            this.limit = Float.valueOf(element.getElementsByTagName("limit").item(0).getTextContent());
         } catch (ParserConfigurationException | SAXException | IOException | NullPointerException e) {
             throw new StorageException("XML Config Error.", e); 
         }
