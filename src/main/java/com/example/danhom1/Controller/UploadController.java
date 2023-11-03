@@ -1,4 +1,4 @@
-package com.example.danhom1.Upload;
+package com.example.danhom1.Controller;
 
 //import java.io.IOException;
 import java.util.stream.Collectors;
@@ -57,7 +57,7 @@ public class UploadController {
 	}
 
 	@ExceptionHandler(StorageFileNotFoundException.class)
-	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+	public ResponseEntity<?> handleStorageFileNotFound() {
 		return ResponseEntity.notFound().build();
 	}
 }
