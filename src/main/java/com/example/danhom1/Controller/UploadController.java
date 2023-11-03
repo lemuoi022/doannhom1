@@ -37,7 +37,7 @@ public class UploadController {
         .map(path -> MvcUriComponentsBuilder.fromMethodName(UploadController.class, 
         "serveFile", path.getFileName().toString()).build().toUri().toString()).
         collect(Collectors.toList()));
-		return "index";
+		return "upload";
 	}
 
 	@GetMapping("/files/{filename:.+}")
