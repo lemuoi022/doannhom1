@@ -22,26 +22,20 @@ jobs:
     steps:
     - uses: actions/checkout@v4.1.1
     - run: |
-        sudo systemctl start mysql.service
-        mysql --user=root --password=root
-        CREATE DATABASE IF NOT EXISTS mydrive
+        sudo systemctl start mysql.service stop
     - name: Set up JDK 21
       uses: actions/setup-java@v3.13.0
       with:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    # - name: Setup MySQL
-    #   # You may pin to the exact commit or the version.
-    #   # uses: mirromutth/mysql-action@de1fba8b3f90ce8db80f663a7043be3cf3231248
-    #   uses: mirromutth/mysql-action@v1.1
-    #   with:
-    #     mysql root password: 'root@localhost'
-    #     mysql database: 'mydrive'
-    #     # MYSQL_USER - create the specified user with superuser power for created database
-    #     mysql user: 'git-user'
-    #     # MYSQL_PASSWORD - specified superuser password which user is power for created database
-    #     mysql password: 'git@root'
+    - name: Setup MySQL
+      # You may pin to the exact commit or the version.
+      # uses: mirromutth/mysql-action@de1fba8b3f90ce8db80f663a7043be3cf3231248
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql root password: 'root'
+        mysql database: 'mydrive'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
