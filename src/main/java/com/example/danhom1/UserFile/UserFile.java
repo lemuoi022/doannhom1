@@ -1,7 +1,10 @@
 package com.example.danhom1.UserFile;
 
 import jakarta.annotation.PostConstruct;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.jetbrains.annotations.Contract;
@@ -14,7 +17,6 @@ import org.jetbrains.annotations.Contract;
 @Table(name = "user_file")
 public class UserFile {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @NonNull
     @NotEmpty
     @Column(name = "id", nullable = false, unique = true)

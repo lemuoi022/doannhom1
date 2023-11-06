@@ -23,7 +23,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NonNull
-    @NotEmpty
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
