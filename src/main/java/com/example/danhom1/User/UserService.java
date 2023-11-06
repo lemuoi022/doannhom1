@@ -1,8 +1,6 @@
 package com.example.danhom1.User;
 
 import com.example.danhom1.Exception.UserAlreadyExistedException;
-import com.example.danhom1.UserStorage.UserStorage;
-import com.example.danhom1.UserStorage.UserStorageRepo;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
