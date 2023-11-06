@@ -30,6 +30,7 @@ public class Storage {
     //limit in MB
     @NonNull
     @Getter
+    @Setter
     private Long limit;
 
     @Contract(pure = true)
