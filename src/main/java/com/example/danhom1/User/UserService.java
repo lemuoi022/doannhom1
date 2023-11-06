@@ -13,13 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
     private final UserRepo userRepo;
-    private final UserStorageRepo userStorageRepo;
+//    private final UserStorageRepo userStorageRepo;
     public User RegisterNewUser(@NonNull User user) throws UserAlreadyExistedException {
         if (EmailExists((user.getEmail())))
             throw new UserAlreadyExistedException();
-        UserStorage userStorage = new UserStorage();
-        userStorage.setUser(user);
-        userStorageRepo.save(userStorage);
+//        UserStorage userStorage = new UserStorage();
+//        userStorage.setUser(user);
+//        userStorageRepo.save(userStorage);
         return userRepo.save(user);
     }
 
