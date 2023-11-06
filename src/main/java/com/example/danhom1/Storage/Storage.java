@@ -39,7 +39,7 @@ public class Storage {
     }
 
     @PostConstruct
-    public void initLimit() {
+    private void initLimit() {
         this.limit = Long.valueOf(Objects.requireNonNull(Objects.requireNonNull(this.env.getProperty("spring.servlet.multipart.max-file-size")).strip().replaceAll("[^0-9]","")));
     }
 }

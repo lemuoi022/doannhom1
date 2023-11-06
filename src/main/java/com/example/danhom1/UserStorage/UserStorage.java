@@ -17,7 +17,7 @@ public class UserStorage extends Storage {
     @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @NonNull
     @OneToOne(cascade = CascadeType.ALL)
