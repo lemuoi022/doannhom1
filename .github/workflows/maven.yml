@@ -23,7 +23,8 @@ jobs:
     - uses: actions/checkout@v4.1.1
     - run: |
         sudo systemctl start mysql.service
-        mysql --user=root --password=root mydrive
+        mysql --user=root --password=root
+        CREATE DATABASE IF NOT EXISTS mydrive
     - name: Set up JDK 21
       uses: actions/setup-java@v3.13.0
       with:
