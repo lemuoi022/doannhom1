@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v4.1.1
     - run: |
         sudo systemctl start mysql.service
-        mysql --user=root --password= mydrive
+        mysql --user=root --password=root mydrive
     - name: Set up JDK 21
       uses: actions/setup-java@v3.13.0
       with:
