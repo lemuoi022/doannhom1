@@ -1,8 +1,8 @@
 package com.example.danhom1.Storage;
 
+import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.io.IOException;
@@ -17,6 +17,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.jetbrains.annotations.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,21 +53,19 @@ public class StorageService {
         try {
             Path toStoreFile = this.rootPath.resolve(Paths.get(Objects.requireNonNull(file.getOriginalFilename()))).normalize().toAbsolutePath();
             if (!toStoreFile.getParent().equals(this.rootPath.toAbsolutePath())) {
-                throw new StorageException("Cannot store file outside current directory." 
+                throw new StorageException("Cannot store file outside current directory."
                 + "\n" + toStoreFile + "\n" + this.rootPath.toAbsolutePath() + file.getOriginalFilename());
             }
+            // noinspection DataFlowIssue
+            toStoreFile = toNewFileIfExists(toStoreFile, Objects.requireNonNull(file.getOriginalFilename()));
             // Paths.get(file.getOriginalFilename()).normalize().toAbsolutePath();
             try (InputStream stream = file.getInputStream()) {
-                if ((!toStoreFile.toFile().exists()
-                        && (file.getSize() > this.remainingSpace))
-                        || (toStoreFile.toFile().exists()
-                        && ((file.getSize() - toStoreFile.toFile().length()) > this.remainingSpace))) {
+                if (file.getSize() > this.remainingSpace) {
                     stream.close();
                     throw new SizeLimitExceededException("The file exceeded the storage limit!");
                 } else {
                     Files.copy(stream,
-                    toStoreFile,
-                    StandardCopyOption.REPLACE_EXISTING);
+                    toStoreFile);
                 }
             }
         } catch (IOException e) {
@@ -116,4 +116,26 @@ public class StorageService {
 			throw new StorageException("Could not initialize storage", e);
 		}
 	}
+
+    @Contract("_, _ -> param1")
+    private @NonNull Path toNewFileIfExists(@NonNull Path path, @NonNull String filename){
+        File file = path.toFile();
+        StringBuilder str = new StringBuilder(filename);
+        if (file.exists()) {
+            if (!FilenameUtils.getName(filename).matches("(_[02-9]\\d*$)")) {
+                if (filename.contains("."))
+                    filename = str.insert(filename.lastIndexOf("."), "_1").toString();
+                else filename += "_1";
+                file = this.rootPath.resolve(filename).toFile();
+            }
+            if (file.exists()) {
+                str = new StringBuilder(file.getName());
+                for (int i = 2; file.exists(); i++) {
+                    filename = str.replace(filename.lastIndexOf("_") + 1, filename.lastIndexOf("_") + 1 + String.valueOf(i - 1).length(), String.valueOf(i)).toString();
+                    file = this.rootPath.resolve(filename).toFile();
+                }
+            }
+        }
+        return file.toPath();
+    }
 }
