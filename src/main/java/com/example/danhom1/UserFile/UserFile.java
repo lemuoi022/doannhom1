@@ -4,6 +4,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.Contract;
 
 @Getter
@@ -24,9 +25,7 @@ public class UserFile {
     @NotEmpty
     private String filename;
 
-    @NonNull
-    @Column(name = "ext", nullable = false)
-    @NotEmpty
+    @Column(name = "ext")
     private String extension;
 
     @NonNull
@@ -37,6 +36,8 @@ public class UserFile {
     @Contract(pure = true)
     @PostConstruct
     private void initExtension() {
-        this.extension = this.filename.substring(filename.lastIndexOf(".") + 1);
+        if (this.filename.contains("."))
+            this.extension = FilenameUtils.getExtension(this.filename);
+        else this.extension = null;
     }
 }
