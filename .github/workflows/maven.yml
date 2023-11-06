@@ -21,14 +21,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4.1.1
+    - run: |
+        sudo systemctl start mysql.service
+        mysql --user=root --password= mydrive
     - name: Set up JDK 21
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v3.13.0
       with:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: start MySQL
-      run: sudo systemctl start mysql.service
     - name: Setup MySQL
       # You may pin to the exact commit or the version.
       # uses: mirromutth/mysql-action@de1fba8b3f90ce8db80f663a7043be3cf3231248
