@@ -1,47 +1,48 @@
 package com.example.danhom1.Storage;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import com.example.danhom1.Exception.StorageException;
-import lombok.NonNull;
-import lombok.Setter;
+import jakarta.annotation.PostConstruct;
+import lombok.*;
+import org.jetbrains.annotations.Contract;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import com.example.danhom1.XMLParser;
 
 // import org.springframework.boot.context.properties.ConfigurationProperties;
-import lombok.Getter;
 
-// @ConfigurationProperties("Storage")
-@Getter
+import java.util.Objects;
+
+@ConfigurationProperties(prefix = "storage")
+@ConfigurationPropertiesScan
 @Component
+@PropertySource("classpath:application.properties")
+@NoArgsConstructor
 public class Storage {
-    @NonNull
-    private final String pPath;
+    private transient Environment env;
 
-    private final String vPath = "0:/";
+    @NonNull
+    @Setter
+    @Getter
+    private String pPath;
+
+//    private final String vPath = "0:/";
 
     //limit in MB
-    @Setter
+    @NonNull
+    @Getter
     private Long limit;
 
-    public Storage() {
-        NodeList nodes;
-        try {
-            nodes = XMLParser.parse("src\\main\\java\\com\\example\\danhom1\\Storage\\StorageConfig.xml", "storage");
-            if (nodes == null || nodes.getLength() <= 0) {
-                throw new StorageException("XML Config Error." + nodes);
-            }
-            Element element = (Element) nodes.item(0);
-            this.pPath = element.getElementsByTagName("path").item(0).getTextContent();
-            this.limit = Long.valueOf(element.getElementsByTagName("limit").item(0).getTextContent().strip());
-        } catch (ParserConfigurationException | SAXException | IOException | NullPointerException e) {
-            throw new StorageException("XML Config Error.", e); 
-        }
+
+    @Contract(pure = true)
+    @Autowired
+    public Storage(Environment env){
+        this.env = env;
+    }
+
+    @PostConstruct
+    public void initLimit() {
+        this.limit = Long.valueOf(Objects.requireNonNull(Objects.requireNonNull(this.env.getProperty("spring.servlet.multipart.max-file-size")).strip().replaceAll("[^0-9]","")));
     }
 }
