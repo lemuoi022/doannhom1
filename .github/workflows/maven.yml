@@ -27,10 +27,14 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
         cache: maven
-    - name: Setup MySQL
-      uses: mirromutth/mysql-action@v1.1
+    - name: actions-setup-mysql
+      # You may pin to the exact commit or the version.
+      # uses: shogo82148/actions-setup-mysql@3226d3e8a0600be87669e55a818e9ab7bf6f7476
+      uses: shogo82148/actions-setup-mysql@v1.26.0
       with:
-        mysql database: 'mydrive'
+        user: 'git-test'
+        # password for the new user
+        password: 'git@localhost'
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
