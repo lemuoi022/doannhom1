@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.example.danhom1.Exception.StorageException;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,8 @@ import com.example.danhom1.Storage.StorageService;
 import javax.naming.SizeLimitExceededException;
 
 @RestController
+@Slf4j
+@CrossOrigin("localhost:4200")
 @AllArgsConstructor
 public class UploadController {
 	private final StorageService storageService;
