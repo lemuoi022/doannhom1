@@ -43,6 +43,8 @@ public class StorageService {
             throw new StorageException("Root path is empty!");
         }
         this.rootPath = Paths.get(storage.getPPath().strip());
+        if (!this.rootPath.toFile().exists())
+            init();
         this.remainingSpace = storage.getLimit() * 1024 * 1024 - FileUtils.sizeOfDirectory(this.rootPath.toFile());
         if (this.remainingSpace <= 0)
             throw new SizeLimitExceededException("The storage has exceed the limit!");
@@ -107,7 +109,6 @@ public class StorageService {
 		FileSystemUtils.deleteRecursively(rootPath.toFile());
 	}
 
-    @PostConstruct
     public void init() {
 		try {
 			Files.createDirectories(this.rootPath);
