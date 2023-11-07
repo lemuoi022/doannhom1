@@ -66,8 +66,7 @@ public class StorageService {
                     stream.close();
                     throw new SizeLimitExceededException("The file exceeded the storage limit!");
                 } else {
-                    Files.copy(stream,
-                    toStoreFile);
+                    Files.copy(stream, toStoreFile);
                 }
             }
         } catch (IOException e) {
