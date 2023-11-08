@@ -29,7 +29,7 @@ import javax.naming.SizeLimitExceededException;
 public class UploadController {
 	private final StorageService storageService;
 
-    @GetMapping("/upload")
+    @GetMapping("/files")
 	@ResponseBody
 	public List<String> listUploadedFiles() {
 		return storageService.loadAll().map(path -> MvcUriComponentsBuilder.fromMethodName(UploadController.class,
@@ -65,14 +65,15 @@ public class UploadController {
 	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         try {
-            storageService.store(file);
-			//this part is temporary
-			//will return response code in the future
+			log.info("Handling {}...", file);
+			storageService.store(file);
 			return ResponseEntity.ok().body(file.getOriginalFilename());
 		} catch (SizeLimitExceededException e) {
+			log.warn(e.getMessage());
 			return ResponseEntity.badRequest().body("Limit exceeded");
         }
 		catch (StorageException e) {
+			log.error(e.getMessage());
 			return ResponseEntity.internalServerError().body("Failed to store file");
 		}
 	}
