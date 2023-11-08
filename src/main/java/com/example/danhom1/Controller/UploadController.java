@@ -1,24 +1,21 @@
 package com.example.danhom1.Controller;
 
 //import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 // import org.springframework.beans.factory.annotation.Autowired;
 import com.example.danhom1.Exception.StorageException;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.danhom1.Exception.StorageFileNotFoundException;
 import com.example.danhom1.Storage.StorageService;
@@ -33,13 +30,11 @@ public class UploadController {
 	private final StorageService storageService;
 
     @GetMapping("/upload")
-	@ModelAttribute
-	public String listUploadedFiles(@NonNull Model model) {
-		model.addAttribute("files", storageService.loadAll()
-        .map(path -> MvcUriComponentsBuilder.fromMethodName(UploadController.class, 
+	@ResponseBody
+	public List<String> listUploadedFiles() {
+		return storageService.loadAll().map(path -> MvcUriComponentsBuilder.fromMethodName(UploadController.class,
         "serveFile", path.getFileName().toString()).build().toUri().toString()).
-        collect(Collectors.toList()));
-		return "upload";
+        collect(Collectors.toList());
 	}
 
 	@GetMapping("/files/{filename:.+}")
@@ -51,38 +46,35 @@ public class UploadController {
 			}
 			return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
 		} catch (StorageFileNotFoundException e) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"File doesn't exist.",e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 
-	@GetMapping("/limit")
-	@ModelAttribute
-	public String viewLimit(@NonNull Model model){
-		model.addAttribute("message","LIMIT EXCEEDED BUY MORE NOW");
-		return "limit";
-	}
+//	@GetMapping("/limit")
+//	@ResponseBody
+//	public String viewLimit(){
+//		return "LIMIT EXCEEDED BUY MORE NOW";
+//	}
+//
+//	@PostMapping("/limit")
+//	public ModelAndView returnToUpload(@NonNull Model model){
+//		model.addAttribute("");
+//		return new ModelAndView("redirect:/upload");
+//	}
 
-	@PostMapping("/limit")
-	public ModelAndView returnToUpload(@NonNull Model model){
-		model.addAttribute("");
-		return new ModelAndView("redirect:/upload");
-	}
-
-	@PostMapping("/upload")
-	public ModelAndView handleFileUpload(@RequestParam("file") MultipartFile file, @NonNull RedirectAttributes redirectAttributes) {
+	@PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<String> handleFileUpload(@RequestParam("file") MultipartFile file) {
         try {
             storageService.store(file);
-			redirectAttributes.addFlashAttribute("message", "You successfully uploaded " + file.getOriginalFilename() + "!");
 			//this part is temporary
 			//will return response code in the future
-			return new ModelAndView("redirect:/upload");
+			return ResponseEntity.ok().body(file.getOriginalFilename());
 		} catch (SizeLimitExceededException e) {
-			return new ModelAndView("redirect:/limit");
+			return ResponseEntity.badRequest().body("Limit exceeded");
         }
-//		catch (StorageException e) {
-//			redirectAttributes.addFlashAttribute("message", "Empty or bad file.");
-//			return new ModelAndView("redirect:/upload",HttpStatus.INTERNAL_SERVER_ERROR);
-//		}
+		catch (StorageException e) {
+			return ResponseEntity.internalServerError().body("Failed to store file");
+		}
 	}
 
 
