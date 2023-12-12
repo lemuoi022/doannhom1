@@ -1,4 +1,4 @@
-package com.example.danhom1.Storage;
+package com.example.danhom1.Model.Storage;
 
 import jakarta.annotation.PostConstruct;
 import lombok.*;
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Component
 @PropertySource("classpath:application.properties")
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Storage {
     private transient Environment env;
 

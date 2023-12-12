@@ -1,5 +1,6 @@
-package com.example.danhom1.UserFile;
+package com.example.danhom1.Model.UserFile;
 
+import com.example.danhom1.Model.UserStorage.UserStorage;
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.Contract;
 @Setter
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 @Table(name = "user_file")
 public class UserFile {
     @Id
@@ -32,6 +33,11 @@ public class UserFile {
     @Column(name = "create_time", nullable = false)
     @NotEmpty
     private String createTime;
+
+    @NonNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "storageID", nullable = false)
+    private UserStorage userStorage;
 
     @Contract(pure = true)
     @PostConstruct

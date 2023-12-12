@@ -1,4 +1,4 @@
-package com.example.danhom1.Storage;
+package com.example.danhom1.Model.Storage;
 
 import java.io.File;
 import java.io.InputStream;

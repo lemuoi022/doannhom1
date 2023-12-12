@@ -1,4 +1,4 @@
-package com.example.danhom1.UserFile;
+package com.example.danhom1.Model.UserFile;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

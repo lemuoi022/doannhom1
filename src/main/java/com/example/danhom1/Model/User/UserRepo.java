@@ -1,4 +1,4 @@
-package com.example.danhom1.User;
+package com.example.danhom1.Model.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

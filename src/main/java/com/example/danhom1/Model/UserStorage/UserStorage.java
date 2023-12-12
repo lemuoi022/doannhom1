@@ -1,9 +1,12 @@
-package com.example.danhom1.UserStorage;
+package com.example.danhom1.Model.UserStorage;
 
-import com.example.danhom1.Storage.Storage;
-import com.example.danhom1.User.User;
+import com.example.danhom1.Model.Storage.Storage;
+import com.example.danhom1.Model.User.User;
+import com.example.danhom1.Model.UserFile.UserFile;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
 
 @Builder
 @Getter
@@ -23,4 +26,8 @@ public class UserStorage extends Storage {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userID",referencedColumnName = "id", nullable = false, unique = true)
     private User user;
+
+    @NonNull
+    @OneToMany(mappedBy = "userStorage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UserFile> userFiles;
 }

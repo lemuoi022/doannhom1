@@ -1,12 +1,11 @@
-package com.example.danhom1.User;
+package com.example.danhom1.Model.User;
 
-import com.example.danhom1.UserStorage.UserStorage;
+import com.example.danhom1.Model.UserStorage.UserStorage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
-@Builder
 @Data
 @Entity
 @AllArgsConstructor
