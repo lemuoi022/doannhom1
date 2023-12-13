@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class LoginController {
     private AuthenticationManager authenticationManager;
-    private PasswordEncoder passwordEncoder;
     @PostMapping("/login")
     public ResponseEntity<ResponseMessage> login (@RequestBody @NotNull UserLoginDto userLoginDto) {
         Authentication authentication = authenticationManager.authenticate(
