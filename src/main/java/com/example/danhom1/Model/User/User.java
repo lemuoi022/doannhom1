@@ -24,7 +24,7 @@ public class User {
     private String name;
 
     @NonNull
-    @Column(name = "pass", nullable = false, unique = true, length = 24)
+    @Column(name = "pass", nullable = false)
     @NotEmpty
     private String pass;
 
