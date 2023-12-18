@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Danhom1Application {
 
 	public static void main(String[] args) {
+//		Role role = new Role();
 		SpringApplication.run(Danhom1Application.class, args);
 	}
 }

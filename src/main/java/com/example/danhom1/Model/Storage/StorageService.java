@@ -13,7 +13,9 @@ import java.nio.file.Path;
 // import org.springframework.beans.factory.annotation.Autowired;
 import com.example.danhom1.Exception.StorageException;
 import com.example.danhom1.Exception.StorageFileNotFoundException;
+import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -29,9 +31,11 @@ import org.springframework.core.io.UrlResource;
 import javax.naming.SizeLimitExceededException;
 
 @Service
-@Transactional
+//@Transactional
 public class StorageService {
-    private final Path rootPath;
+    @Setter
+    @Getter
+    private Path rootPath;
     private final Long remainingSpace;
 
     // @Autowired
@@ -43,7 +47,7 @@ public class StorageService {
         }
         this.rootPath = Paths.get(storage.getPPath().strip());
         if (!this.rootPath.toFile().exists())
-            init();
+            init(this.rootPath);
         this.remainingSpace = storage.getLimit() * 1024 * 1024 - FileUtils.sizeOfDirectory(this.rootPath.toFile());
         if (this.remainingSpace <= 0)
             throw new SizeLimitExceededException("The storage has exceed the limit!");
@@ -107,9 +111,9 @@ public class StorageService {
 		FileSystemUtils.deleteRecursively(rootPath.toFile());
 	}
 
-    public void init() {
+    public void init(Path rootPath) {
 		try {
-			Files.createDirectories(this.rootPath);
+			Files.createDirectories(rootPath);
 		}
 		catch (IOException e) {
 			throw new StorageException("Could not initialize storage", e);

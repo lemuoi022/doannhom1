@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Contract;
 @Setter
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor(force = true)
+@NoArgsConstructor
 @Table(name = "user_file")
 public class UserFile {
     @Id
@@ -41,7 +41,7 @@ public class UserFile {
 
     @Contract(pure = true)
     @PostConstruct
-    private void initExtension() {
+    public void initExtension() {
         if (this.filename.contains("."))
             this.extension = FilenameUtils.getExtension(this.filename);
         else this.extension = null;
