@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth.requestMatchers("/login").permitAll()
                         .requestMatchers("/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/upload").permitAll()
+                        .requestMatchers("/exit").permitAll()
                         .requestMatchers(HttpMethod.GET, "/**").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(

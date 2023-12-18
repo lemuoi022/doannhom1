@@ -140,7 +140,7 @@ public class ApplicationController {
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("User registered successfully."));
 	}
 
-	@PostMapping("/logout")
+	@PostMapping("/exit")
 	public ResponseEntity<ResponseMessage> logout() {
 		SecurityContextHolder.getContext().setAuthentication(null);
 		return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("Logout successful."));
@@ -151,11 +151,10 @@ public class ApplicationController {
 	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
 		String message = "";
 		try {
-			storageService.store(file);
-			System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
 			userFileService.store(storageService.load((storage.getPPath() + File.separator + file.getOriginalFilename())),
 					userRepo.findUserByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).getUserStorage()
 			);
+			storageService.store(file);
 			message = "Uploaded the file successfully: " + file.getOriginalFilename();
 			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 		} catch (SizeLimitExceededException e) {
